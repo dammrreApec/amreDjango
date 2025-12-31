@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-white border-secondary shadow">
+                <div class="card-body">
+                    <h3 class="fw-bold mb-0">Personal Account</h3>
+                    <p class="text-primary mt-2 mb-0">Logged in as:</p>
+                    <h4 class="fw-semibold">{{ user.username }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="text-white mb-0">❤️ Your Favorites</h4>
+                <span class="badge bg-secondary">{{ favorites|length }} items</span>
+            </div>
+
+            <div class="list-group shadow-sm">
+                {% for fav in favorites %}
+                <div
+                    class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center p-3">
+                    <div class="d-flex align-items-center">
+                        {% if fav.product.image %}
+                        <img src="{{ fav.product.image.url }}" class="rounded me-3"
+                            style="width: 50px; height: 50px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h6 class="mb-0 fw-bold">{{ fav.product.name }}</h6>
+                            <small class="text-success fw-bold">₸{{ fav.product.price }}</small>
+                        </div>
+                    </div>
+                    <a href="{% url 'toggle_favorite' fav.product.id %}"
+                        class="btn btn-sm btn-outline-danger">Remove</a>
+                </div>
+                {% empty %}
+                <div class="text-center py-5 border border-secondary border-dashed rounded bg-dark">
+                    <p class="text-muted fs-5">Your favorites list is currently empty.</p>
+                    <a href="{% url 'product_list' %}" class="btn btn-primary btn-sm px-4">Browse Catalog</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
